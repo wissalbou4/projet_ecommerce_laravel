@@ -13,7 +13,7 @@ class FamilleController extends Controller
     public function index()
     {
        $familles = Famille::all();
-       return view("familles.index", compact("familles"));
+       return view("admin.familles.index", compact("familles"));
     }
 
     /**
@@ -21,7 +21,7 @@ class FamilleController extends Controller
      */
     public function create()
     {
-        return view("familles.create");
+        return view("admin.familles.create");
     }
 
     /**
@@ -35,7 +35,7 @@ class FamilleController extends Controller
         }
         
         Famille::create($formFields);
-        return redirect()->route("familles.index")->with("success","cette famille bien ajouter");
+        return redirect()->route("admin.familles.index")->with("success","cette famille bien ajouter");
     }
 
     /**
@@ -43,7 +43,7 @@ class FamilleController extends Controller
      */
     public function show(Famille $famille)
     {
-        return view("familles.show", compact("famille"));
+        return view("admin.familles.show", compact("famille"));
     }
 
     /**
@@ -51,7 +51,7 @@ class FamilleController extends Controller
      */
     public function edit(Famille $famille)
     {
-       return view("familles.edit", compact("famille"));
+       return view("admin.familles.edit", compact("famille"));
     }
 
     /**
@@ -65,7 +65,7 @@ class FamilleController extends Controller
         }
         $famille->update($formFields);
        
-       return redirect()->route("familles.index")->with("success","cette famille bien modefier");
+       return redirect()->route("admin.familles.index")->with("success","cette famille bien modefier");
     }
 
     /**
@@ -75,6 +75,6 @@ class FamilleController extends Controller
     {
         
         $famille->delete();
-        return redirect()->route("familles.index")->wth("success","cette famille bien supprimer");
+        return redirect()->route("admin.familles.index")->wth("success","cette famille bien supprimer");
     }
 }

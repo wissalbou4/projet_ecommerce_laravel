@@ -14,7 +14,7 @@ class ModeReglementController extends Controller
     {
         $modeReglements = ModeReglement::all();
        
-        return view("modereglements.index", compact("modeReglements"));
+        return view("admin.modereglements.index", compact("modeReglements"));
     }
 
     /**
@@ -22,7 +22,7 @@ class ModeReglementController extends Controller
      */
     public function create()
     {
-        return view("modereglements.create");
+        return view("admin.modereglements.create");
     }
 
     /**
@@ -31,7 +31,7 @@ class ModeReglementController extends Controller
     public function store(Request $request)
     {
          ModeReglement::create($request->all());
-         return redirect()->route("modereglements.index")->with("success","cette mode bien ajouter");
+         return redirect()->route("admin.modereglements.index")->with("success","cette mode bien ajouter");
     }
 
     /**
@@ -39,7 +39,7 @@ class ModeReglementController extends Controller
      */
     public function show(ModeReglement $modeReglement)
     {
-        return view("modereglements.show", compact("modeReglement"));
+        return view("admin.modereglements.show", compact("modeReglement"));
     }
 
     /**
@@ -48,7 +48,7 @@ class ModeReglementController extends Controller
     public function edit($id)
 {
     $modeReglement = ModeReglement::findOrFail($id);
-    return view("modereglements.edit", compact("modeReglement"));
+    return view("admin.modereglements.edit", compact("modeReglement"));
 }
 
 
@@ -59,7 +59,7 @@ class ModeReglementController extends Controller
     {
         
         $modeReglement->update($request->all());
-        return redirect()->route('modereglements.index')->with('success', 'Le mode de règlement a bien été modifié.');
+        return redirect()->route('admin.modereglements.index')->with('success', 'Le mode de règlement a bien été modifié.');
     }
     
 
@@ -69,6 +69,6 @@ class ModeReglementController extends Controller
     public function destroy(ModeReglement $modeReglement)
     {
         $modeReglement->delete();
-        return redirect()->route("modereglements.index")->with("success","cette mode bien supprimer");
+        return redirect()->route("admin.modereglements.index")->with("success","cette mode bien supprimer");
     }
 }

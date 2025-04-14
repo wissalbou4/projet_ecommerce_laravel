@@ -13,7 +13,7 @@ class MarqueController extends Controller
     public function index()
     {
         $marques = Marque::all();
-        return view("marques.index", compact("marques"));
+        return view("admin.marques.index", compact("marques"));
     }
 
     /**
@@ -21,7 +21,7 @@ class MarqueController extends Controller
      */
     public function create()
     {
-        return view("marques.create");
+        return view("admin.marques.create");
     }
 
     /**
@@ -35,7 +35,7 @@ class MarqueController extends Controller
         }
         
        Marque::create($formFields);
-       return redirect()->route('marques.index')->with('success','cette marque bien ajouter');
+       return redirect()->route('admin.marques.index')->with('success','cette marque bien ajouter');
     }
 
     /**
@@ -43,7 +43,7 @@ class MarqueController extends Controller
      */
     public function show(Marque $marque)
     {
-        return view('marques.show', compact('marque'));
+        return view('admin.marques.show', compact('marque'));
     }
 
     /**
@@ -51,7 +51,7 @@ class MarqueController extends Controller
      */
     public function edit(Marque $marque)
     {
-        return view('marques.edit', compact('marque'));
+        return view('admin.marques.edit', compact('marque'));
     }
 
     /**
@@ -65,7 +65,7 @@ class MarqueController extends Controller
         }
         $marque->update($formFields);
        
-        return redirect()->route('marques.index')->with('success','cette marque bien modefier');
+        return redirect()->route('admin.marques.index')->with('success','cette marque bien modefier');
     }
 
     /**
@@ -74,6 +74,6 @@ class MarqueController extends Controller
     public function destroy(Marque $marque)
     {
        $marque->delete();
-       return redirect()->route('marques.index')->with('success','cette marque bien supprimer');
+       return redirect()->route('admin.marques.index')->with('success','cette marque bien supprimer');
     }
 }

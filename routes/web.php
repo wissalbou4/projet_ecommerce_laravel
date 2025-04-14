@@ -10,6 +10,7 @@ use App\Http\Controllers\ModeReglementController;
 use App\Http\Controllers\ReglementController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,8 +22,11 @@ use App\Http\Controllers\ReglementController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return view('lyaouts.app');
+});
+Route::get('/', function () {
+    return view('welcome');
 });
 Route::resource('clients', ClientController::class);
 Route::resource('familles', FamilleController::class);

@@ -13,7 +13,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles=Article::all();
-        return view("articles.index",compact("articles"));
+        return view("admin.articles.index",compact("articles"));
     }
 
     /**
@@ -21,7 +21,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-       return view("articles.create");
+       return view("admin.articles.create");
     }
 
     /**
@@ -35,7 +35,7 @@ class ArticleController extends Controller
         }
         
         Article::create($formFields);
-        return redirect()->route("articles.index")->with("success","cette article ajouter bien");
+        return redirect()->route("admin.articles.index")->with("success","cette article ajouter bien");
     }
 
     /**
@@ -43,7 +43,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view("articles.show",compact("article"));
+        return view("admin.articles.show",compact("article"));
     }
 
     /**
@@ -51,7 +51,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-       return view("articles.edit",compact("article"));
+       return view("admin.articles.edit",compact("article"));
     }
 
     /**
@@ -65,7 +65,7 @@ class ArticleController extends Controller
         }
         $article->update($formFields);
     
-       return redirect()->route("articles.index")->with("success","cette articles bien modefier");
+       return redirect()->route("admin.articles.index")->with("success","cette articles bien modefier");
     }
 
     /**
@@ -74,6 +74,10 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
-        return redirect()->route("articles.index")->with("success","cette article bien supprimer");
+        return redirect()->route("admin.articles.index")->with("success","cette article bien supprimer");
+    }
+    public function showAll(){
+        $articles=Article::all();
+        return view("client.showAll",compact("articles"));
     }
 }

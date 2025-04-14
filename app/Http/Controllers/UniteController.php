@@ -13,7 +13,7 @@ class UniteController extends Controller
     public function index()
     {
         $unites = Unite::all();
-        return view("unites.index", compact("unites"));
+        return view("admin.unites.index", compact("unites"));
     }
 
     /**
@@ -21,7 +21,7 @@ class UniteController extends Controller
      */
     public function create()
     {
-        return view("unites.create");
+        return view("admin.unites.create");
     }
 
     /**
@@ -30,7 +30,7 @@ class UniteController extends Controller
     public function store(Request $request)
     {
        Unite::create($request->all());
-       return redirect()->route("unites.index")->with('success',"cette unite bien ajouter");
+       return redirect()->route("admin.unites.index")->with('success',"cette unite bien ajouter");
     }
 
     /**
@@ -38,7 +38,7 @@ class UniteController extends Controller
      */
     public function show(Unite $unite)
     {
-       return view("unites.show", compact("unite"));
+       return view("admin.unites.show", compact("unite"));
     }
 
     /**
@@ -46,7 +46,7 @@ class UniteController extends Controller
      */
     public function edit(Unite $unite)
     {
-       return view("unites.edit", compact("unite"));
+       return view("admin.unites.edit", compact("unite"));
     }
 
     /**
@@ -55,7 +55,7 @@ class UniteController extends Controller
     public function update(Request $request, Unite $unite)
     {
         $unite->update($request->all());
-        return redirect()->route("unites.index")->with("success","cette unites bien modefier");
+        return redirect()->route("admin.unites.index")->with("success","cette unites bien modefier");
     }
 
     /**
@@ -64,6 +64,6 @@ class UniteController extends Controller
     public function destroy(Unite $unite)
     {
         $unite->delete();
-        return redirect()->route("unites.index")->with("success","cette unites bien supprimer");
+        return redirect()->route("admin.unites.index")->with("success","cette unites bien supprimer");
     }
 }

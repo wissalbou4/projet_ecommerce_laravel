@@ -13,7 +13,7 @@ class ReglementController extends Controller
     public function index()
     {
         $reglements = Reglement::all();
-        return view("reglements.index", compact("reglements"));
+        return view("admin.reglements.index", compact("reglements"));
     }
 
     /**
@@ -21,7 +21,7 @@ class ReglementController extends Controller
      */
     public function create()
     {
-        return view("reglements.create");
+        return view("admin.reglements.create");
     }
 
     /**
@@ -30,7 +30,7 @@ class ReglementController extends Controller
     public function store(Request $request)
     {
         Reglement::create($request->all());
-        return redirect()->route("reglements.index")->with('success','cette reglement bien ajouter');
+        return redirect()->route("admin.reglements.index")->with('success','cette reglement bien ajouter');
     }
 
     /**
@@ -38,7 +38,7 @@ class ReglementController extends Controller
      */
     public function show(Reglement $reglement)
     {
-       return view('reglements.show', compact('reglement'));
+       return view('admin.reglements.show', compact('reglement'));
     }
 
     /**
@@ -46,7 +46,7 @@ class ReglementController extends Controller
      */
     public function edit(Reglement $reglement)
     {
-       return view('reglements.edit', compact('reglement'));
+       return view('admin.reglements.edit', compact('reglement'));
     }
 
     /**
@@ -55,7 +55,7 @@ class ReglementController extends Controller
     public function update(Request $request, Reglement $reglement)
     {
         $reglement->update($request->all());
-        return redirect()->route('reglements.index')->with('success','cette regle bien modefier');
+        return redirect()->route('admin.reglements.index')->with('success','cette regle bien modefier');
     }
 
     /**
@@ -64,6 +64,6 @@ class ReglementController extends Controller
     public function destroy(Reglement $reglement)
     {
        $reglement->delete();
-       return redirect()->route('reglements.index')->with('success','cette regle bien supprimer');
+       return redirect()->route('admin.reglements.index')->with('success','cette regle bien supprimer');
     }
 }
