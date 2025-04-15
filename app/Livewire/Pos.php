@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Livewire;
+
 use App\Models\Commande;
 use App\Models\DetaileBl;
 use Illuminate\Support\Facades\DB;
-
 use Livewire\Component;
 use App\Models\Article;
 use App\Models\Famille;
@@ -34,12 +35,13 @@ class Pos extends Component
         $this->calculateTotals();
         $this->client_id = null;
         $this->clients = Client::all();
+     
     }
 
     public function render()
-    {
-        return view('livewire.pos');
-    }
+{
+    return view('livewire.pos');
+}
 
     public function selectFamille($familleId)
     {
@@ -129,50 +131,84 @@ class Pos extends Component
 
         $this->total = $this->subTotal + $taxAmount + $this->shipping - $discountAmount;
     }
-    //ajout du panier dans le commande et detaille commande
+
     public function payer()
-{
-    if (!$this->client_id) {
-        session()->flash('error', 'Veuillez sélectionner un client.');
-        return;
-    }
-
-    if (empty($this->cart)) {
-        session()->flash('error', 'Le panier est vide.');
-        return;
-    }
-
-    DB::beginTransaction();
-
-    try {
-        $commande = Commande::create([
-            'date' => now(),
-            'remise' => $this->discount,
-            'shipping' => $this->shipping,
-            'client_id' => $this->client_id,
-        ]);
-
-        foreach ($this->cart as $item) {
-            DetaileBl::create([
-                'commande_id' => $commande->id,
-                'article_id' => $item['id'],
-                'quantite' => $item['qty'],
-                'prix_vente_ht' => $item['prix'],
-                'tva' => $this->tax,
-                'remise' => $this->discountType === 'percent'
-                    ? ($this->discount / 100) * ($item['prix'] * $item['qty'])
-                    : $this->discount,
-            ]);
+    {
+        if (!$this->client_id) {
+            session()->flash('error', 'Veuillez sélectionner un client.');
+            return;
         }
 
-        DB::commit();
+        if (empty($this->cart)) {
+            session()->flash('error', 'Le panier est vide.');
+            return;
+        }
 
-        $this->resetCart();
-        session()->flash('success', 'Commande enregistrée avec succès.');
+        DB::beginTransaction();
 
-    } catch (\Exception $e) {
-        DB::rollback();
-        session()->flash('error', 'Erreur lors de l\'enregistrement : ' . $e->getMessage());
+        try {
+            // Créer la commande
+            $commande = Commande::create([
+                'date' => now(),
+                'remise' => $this->discount,
+                'shipping' => $this->shipping,
+                'client_id' => $this->client_id,
+            ]);
+
+            // Ajouter les articles dans la table `detaile_bls`
+            foreach ($this->cart as $item) {
+                $remiseArticle = $this->discountType === 'percent'
+                    ? ($this->discount / 100) * ($item['prix'] * $item['qty'])
+                    : $this->discount;
+
+                $tvaArticle = ($this->tax / 100) * ($item['prix'] * $item['qty']);
+
+                DetaileBl::create([
+                    'commande_id' => $commande->id,
+                    'article_id' => $item['id'],
+                    'quantite' => $item['qty'],
+                    'prix_vente_ht' => $item['prix'],
+                    'tva' => $tvaArticle,
+                    'remise' => $remiseArticle,
+                ]);
+            }
+
+            DB::commit();
+
+            $this->resetCart();
+            session()->flash('success', 'Commande enregistrée avec succès.');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            session()->flash('error', 'Erreur lors de l\'enregistrement : ' . $e->getMessage());
+        }
     }
+    public function restaurerCommande($commandeId)
+{
+    $commande = Commande::findOrFail($commandeId);
+
+    $details = DetaileBl::where('commande_id', $commandeId)->get();
+
+    $cart = [];
+
+    foreach ($details as $detail) {
+        $cart[$detail->article_id] = [
+            'id' => $detail->article_id,
+            'designation' => $detail->article->designation,
+            'prix' => $detail->prix_vente_ht,
+            'qty' => $detail->quantite,
+        ];
+    }
+
+    $this->cart = $cart;
+    $this->client_id = $commande->client_id;
+    $this->discount = $commande->remise;
+    $this->shipping = $commande->shipping;
+
+    session()->put('cart', $this->cart);
+    $this->calculateTotals();
+
+    session()->flash('success', 'Commande restaurée avec succès.');
 }
+
 }
